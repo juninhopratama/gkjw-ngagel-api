@@ -70,15 +70,30 @@ class RegistrationController extends Controller
                 ], 400);
             };
 
+            $gereja_asal = $request->gereja_asal;
+            if(!$gereja_asal){
+                $gereja_asal = 'GKJW Ngagel';
+            }
+
+            $wilayah = $request->wilayah;
+            if(!$wilayah){
+                $wilayah = '0';
+            }
+
+            $kelompok = $request->kelompok;
+            if(!$kelompok){
+                $kelompok = '0';
+            }
+            
             $registration = Registration::create([
                 'uuid' => $uuid,
                 'nama_jemaat' =>$request->nama_jemaat,
                 'nik' => $nik,
                 'id_ibadah' => $id_ibadah,
                 'date_registered' => $date_registered,
-                'wilayah' => $request->wilayah,
-                'kelompok' => $request->kelompok,
-                'gereja_asal' => $request->gereja_asal,
+                'wilayah' => $wilayah,
+                'kelompok' => $kelompok,
+                'gereja_asal' => $gereja_asal,
                 'isScanned' => false
             ]);
 
@@ -150,13 +165,28 @@ class RegistrationController extends Controller
             ], 404);
         };
 
+        $gereja_asal = $request->gereja_asal;
+            if(!$gereja_asal){
+                $gereja_asal = 'GKJW Ngagel';
+            }
+
+            $wilayah = $request->wilayah;
+            if(!$wilayah){
+                $wilayah = '0';
+            }
+
+            $kelompok = $request->kelompok;
+            if(!$kelompok){
+                $kelompok = '0';
+            }
+
         $registration->update([
             'nama_jemaat' =>$request->nama_jemaat,
             'nik' => $request->nik,
             'id_ibadah' => $request->id_ibadah,
-            'wilayah' => $request->wilayah,
-            'kelompok' => $request->kelompok,
-            'gereja_asal' => $request->gereja_asal,
+            'wilayah' => $wilayah,
+            'kelompok' => $kelompok,
+            'gereja_asal' => $gereja_asal,
             'isScanned' => false
         ]);
 
