@@ -60,7 +60,7 @@ https://domain/api/ibadah
         "created_at": "2021-10-18T14:15:30.000000Z",
         "updated_at": "2021-10-18T14:20:34.000000Z"
     },
-    "message": "Updated Successfully"
+    "message": "Retrieved Successfully"
     }
     ```
 - **POST**
