@@ -21,11 +21,12 @@ https://domain/api/ibadah
 ### 🎯 API Endpoints
 
 - **GET**
-    ```sh
-    /ibadah
-    /ibadah/{id}
-    /registration
-    /registration/{id}
+    ```
+    /ibadah             (get all ibadah)
+    /ibadah/{id}        (get ibadah by id)
+    /registration       (get all registered)
+    /registration/{id}  (get register by id)
+    /nearest            (get nearest ibadah along with details, quota, and remaining seat)
     ```
     Response Example for /ibadah
     ```json
@@ -64,10 +65,16 @@ https://domain/api/ibadah
     }
     ```
 - **POST**
-    ```sh
-    /ibadah
-    /registration
     ```
+    /ibadah         (create new ibadah)
+    /registration   (create new registration)
+    ```
+    #### Headers ####
+    Use headers when POST
+    Key | Value
+    | --- | --- |
+    Accept | application/json
+    
     #### Payload ####
     Payload for POST method in ```/ibadah```
     Variable | Data Type | Nullable
