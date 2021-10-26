@@ -7,7 +7,7 @@
   </head>
   <body>
 
-    <div class="container p-5">
+    <div class="container p-5 align-items-center justify-content-center">
         <h5>Keterisian Kuota Kursi Ibadah Minggu, {{$next}}</h5>
 
         <div id="piechart" style="width: 900px; height: 500px;"></div>
