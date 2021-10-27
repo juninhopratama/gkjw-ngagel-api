@@ -15,21 +15,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// route protects
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('/check/{id}', [CheckController::class, 'check']);
+
+    // route for registration
+    Route::resource('/registration', RegistrationController::class);
+    
+    // get nearest ibadah detail along with quota and remaining seats
+    Route::get('/nearest', [CheckController::class, 'nearest']);
 });
+
+// register token
+Route::post('/registoken', [AuthController::class, 'registerToken']);
 
 // route for ibadah
 Route::resource('/ibadah', IbadahController::class);
 
-// route for registration
-Route::resource('/registration', RegistrationController::class);
 
 // route for check IMPORTANT: FOR CHECKING PURPOSE, DON'T CONSUME FOR FE
-Route::get('/check/{id}', [CheckController::class, 'check']);
+// Route::get('/check/{id}', [CheckController::class, 'check']);
 
-// get nearest ibadah detail along with quota and remaining seats
-Route::get('/nearest', [CheckController::class, 'nearest']);
 
 // testing purposes
 Route::get('/uuid', [RegistrationController::class, 'uuid']);
