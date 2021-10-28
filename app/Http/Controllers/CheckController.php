@@ -53,4 +53,30 @@ class CheckController extends Controller
             'remaining' => $remaining
         ], 200);
     }
+
+    public function qrChecker($uuid)
+    {
+        $registered = Registration::where('uuid', $uuid)->first();
+
+        if(!$registered){
+            return response()->json([
+                'message' => 'Scan code invalid!',                
+            ], 404);
+        }
+
+        $isScanned = $registered->isScanned;
+        if($isScanned == 0){
+            $registered->update([
+                'isScanned' => true
+            ]);
+            return response()->json([
+                'name' => $registered->nama_jemaat,
+                'message' => 'QR code successfully scanned!'
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Code has been scanned!'
+        ], 200);
+    }
 }

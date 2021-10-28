@@ -40,5 +40,6 @@ Route::resource('/ibadah', IbadahController::class);
 // testing purposes
 Route::get('/uuid', [RegistrationController::class, 'uuid']);
 
-
+// scan QR
+Route::get('/scan/{uuid}', [CheckController::class, 'qrChecker']);
 
