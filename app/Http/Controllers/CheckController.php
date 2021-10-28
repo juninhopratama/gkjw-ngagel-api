@@ -36,6 +36,7 @@ class CheckController extends Controller
         $registration = Registration::where('id_ibadah', $ibadah->id)->get();
         $registered = count($registration);
         $remaining = $quota - $registered;
+        $nextDate = Carbon::parse($ibadah->tanggal_ibadah)->isoFormat('dddd, DD-M-YYYY');
 
         if(!$ibadah){
             return response()->json([
@@ -45,7 +46,7 @@ class CheckController extends Controller
         
         return response()->json([
             'now' => $now,
-            'next' => $ibadah->tanggal_ibadah,
+            'next' => $nextDate,
             'id_ibadah' => $ibadah->id,
             'registered' => $registered,
             'quota' => $quota,
