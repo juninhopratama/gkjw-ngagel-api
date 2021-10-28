@@ -61,6 +61,7 @@ class RegistrationController extends Controller
             $validator = Validator::make($request->all(), [
                 'nama_jemaat' => 'required',
                 'nik' => 'required',
+                'umur' => 'required',
                 'id_ibadah' => 'required'
             ]);
     
@@ -89,6 +90,7 @@ class RegistrationController extends Controller
                 'uuid' => $uuid,
                 'nama_jemaat' =>$request->nama_jemaat,
                 'nik' => $nik,
+                'umur' => $request->umur,
                 'id_ibadah' => $id_ibadah,
                 'date_registered' => $date_registered,
                 'wilayah' => $wilayah,
@@ -182,6 +184,7 @@ class RegistrationController extends Controller
 
         $registration->update([
             'nama_jemaat' =>$request->nama_jemaat,
+            'umur' => $request->umur,
             'nik' => $request->nik,
             'id_ibadah' => $request->id_ibadah,
             'wilayah' => $wilayah,
