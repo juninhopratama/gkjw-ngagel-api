@@ -76,6 +76,7 @@ class CheckController extends Controller
         }
 
         return response()->json([
+            'name' => $registered->nama_jemaat,
             'message' => 'Code has been scanned!'
         ], 200);
     }
