@@ -33,6 +33,3 @@ Route::get('/nearest', [CheckController::class, 'nearest']);
 
 // testing purposes
 Route::get('/uuid', [RegistrationController::class, 'uuid']);
-
-
-

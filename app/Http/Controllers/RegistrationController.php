@@ -48,19 +48,21 @@ class RegistrationController extends Controller
         }while($uuidChecker->count());
 
         $id_ibadah = $request->id_ibadah;
-        $nik = $request->nik;
+        $nama_jemaat = $request->nama_jemaat;
+        $dob = $request->dob;
         $date_registered = Carbon::now();
 
         // select from db where id and nik
         $checker = Registration::where('id_ibadah', $id_ibadah)
-            ->where('nik',$nik)
+            ->where('dob',$dob)
+            ->where('nama_jemaat', $nama_jemaat)
             ->get();
 
         // if user hasn't registered, store data
         if($checker->isEmpty()){
             $validator = Validator::make($request->all(), [
                 'nama_jemaat' => 'required',
-                'nik' => 'required',
+                'dob' => 'required',
                 'id_ibadah' => 'required'
             ]);
     
@@ -88,7 +90,7 @@ class RegistrationController extends Controller
             $registration = Registration::create([
                 'uuid' => $uuid,
                 'nama_jemaat' =>$request->nama_jemaat,
-                'nik' => $nik,
+                'dob' => $dob,
                 'id_ibadah' => $id_ibadah,
                 'date_registered' => $date_registered,
                 'wilayah' => $wilayah,
@@ -147,7 +149,7 @@ class RegistrationController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nama_jemaat' => 'required',
-            'nik' => 'required',
+            'dob' => 'required',
             'id_ibadah' => 'required'
         ]);
 
@@ -182,7 +184,7 @@ class RegistrationController extends Controller
 
         $registration->update([
             'nama_jemaat' =>$request->nama_jemaat,
-            'nik' => $request->nik,
+            'dob' => $request->dob,
             'id_ibadah' => $request->id_ibadah,
             'wilayah' => $wilayah,
             'kelompok' => $kelompok,
