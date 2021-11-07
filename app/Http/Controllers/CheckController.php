@@ -36,6 +36,7 @@ class CheckController extends Controller
         $registration = Registration::where('id_ibadah', $ibadah->id)->get();
         $registered = count($registration);
         $remaining = $quota - $registered;
+        $nextDate = Carbon::parse($ibadah->tanggal_ibadah)->isoFormat('dddd, DD-M-YYYY');
 
         if(!$ibadah){
             return response()->json([
@@ -45,11 +46,38 @@ class CheckController extends Controller
         
         return response()->json([
             'now' => $now,
-            'next' => $ibadah->tanggal_ibadah,
+            'next' => $nextDate,
             'id_ibadah' => $ibadah->id,
             'registered' => $registered,
             'quota' => $quota,
             'remaining' => $remaining
+        ], 200);
+    }
+
+    public function qrChecker($uuid)
+    {
+        $registered = Registration::where('uuid', $uuid)->first();
+
+        if(!$registered){
+            return response()->json([
+                'message' => 'Scan code invalid!',                
+            ], 404);
+        }
+
+        $isScanned = $registered->isScanned;
+        if($isScanned == 0){
+            $registered->update([
+                'isScanned' => true
+            ]);
+            return response()->json([
+                'name' => $registered->nama_jemaat,
+                'message' => 'QR code successfully scanned!'
+            ], 200);
+        }
+
+        return response()->json([
+            'name' => $registered->nama_jemaat,
+            'message' => 'Code has been scanned!'
         ], 200);
     }
 }
