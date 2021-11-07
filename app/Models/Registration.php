@@ -11,13 +11,12 @@ class Registration extends Model
     protected $fillable = [
         'uuid',
         'nama_jemaat',
-        'umur',
-        'nik',
         'id_ibadah',
         'date_registered',
         'wilayah',
         'kelompok',
         'gereja_asal',
-        'isScanned'
+        'isScanned',
+        'dob'
     ];
 }
