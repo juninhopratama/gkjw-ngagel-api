@@ -80,4 +80,20 @@ class CheckController extends Controller
             'message' => 'Code has been scanned!'
         ], 200);
     }
+    
+    public function nearestRegistered()
+    {
+        $now = Carbon::now()
+            ->isoFormat('YYYY-MM-DD');
+
+        $ibadah = Ibadah::where('tanggal_ibadah', '>=', $now)
+            ->orderBy('tanggal_ibadah', 'ASC')
+            ->first();
+        
+        $registration = Registration::where('id_ibadah', $ibadah->id)->get();
+
+        return response()->json([
+            'data' => $registration
+        ], 200);
+    }
 }
