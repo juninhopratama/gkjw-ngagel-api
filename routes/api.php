@@ -42,3 +42,6 @@ Route::get('/uuid', [RegistrationController::class, 'uuid']);
 
 // scan QR
 Route::get('/scan/{uuid}', [CheckController::class, 'qrChecker']);
+
+// get nearest ibadah registered users
+Route::get('/nearestRegistered', [CheckController::class, 'nearestRegistered']);
