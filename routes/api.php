@@ -21,7 +21,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // route for registration
     Route::resource('/registration', RegistrationController::class);
-    
+
     // get nearest ibadah detail along with quota and remaining seats
     Route::get('/nearest', [CheckController::class, 'nearest']);
 });
@@ -49,3 +49,7 @@ Route::get('/nearestRegistered', [CheckController::class, 'nearestRegistered']);
 
 // get nearest ibadah registered users
 Route::get('/nearestRegistered1', [CheckController::class, 'nearestRegistered']);
+
+Route::get('/v2/nearest', [CheckControllerV2::class, 'nearestV2']);
+
+Route::get('/v2/nearestv1', [CheckController::class, 'nearest']);
