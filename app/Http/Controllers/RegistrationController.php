@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ibadah;
 use Carbon\Carbon;
 use App\Models\Registration;
 use Illuminate\Http\Request;
@@ -58,63 +59,76 @@ class RegistrationController extends Controller
             ->where('nama_jemaat', $nama_jemaat)
             ->get();
 
-        // if user hasn't registered, store data
-        if($checker->isEmpty()){
-            $validator = Validator::make($request->all(), [
-                'nama_jemaat' => 'required',
-                'dob' => 'required',
-                'id_ibadah' => 'required'
-            ]);
-    
-            if($validator->fails()){
-                return response()->json([
-                    $validator->errors()
-                ], 400);
-            };
-
-            $gereja_asal = $request->gereja_asal;
-            if(!$gereja_asal){
-                $gereja_asal = 'GKJW Ngagel';
-            }
-
-            $wilayah = $request->wilayah;
-            if(!$wilayah){
-                $wilayah = '0';
-            }
-
-            $kelompok = $request->kelompok;
-            if(!$kelompok){
-                $kelompok = '0';
-            }
-            
-            $registration = Registration::create([
-                'uuid' => $uuid,
-                'nama_jemaat' =>$request->nama_jemaat,
-                'dob' => $dob,
-                'id_ibadah' => $id_ibadah,
-                'date_registered' => $date_registered,
-                'wilayah' => $wilayah,
-                'kelompok' => $kelompok,
-                'gereja_asal' => $gereja_asal,
-                'isScanned' => false
-            ]);
-
-            if($registration){
-                return response()->json([
-                    'data' => $registration,
-                    'message' => 'Created Successfully'
-                ], 201);
-            };
-
+        // check if quota still available
+        $ibadah = Ibadah::where('id', $id_ibadah)->first();
+        $quota = $ibadah->quota;
+        $registration = Registration::where('id_ibadah', $id_ibadah)->get();
+        $registered = count($registration);
+        $remaining = $quota - $registered;
+        if ($remaining <= 0) {
             return response()->json([
-                'message' => 'Failed to create Ibadah'
-            ], 409);
-        }
+                'message' => 'Quota Penuh!'
+            ], 400);
+        }else {
+             // if user hasn't registered, store data
+            if($checker->isEmpty()){
+                $validator = Validator::make($request->all(), [
+                    'nama_jemaat' => 'required',
+                    'dob' => 'required',
+                    'id_ibadah' => 'required'
+                ]);
 
-        return response()->json([
-            'message' => 'Error, already registered!'
-        ], 400);
+                if($validator->fails()){
+                    return response()->json([
+                        $validator->errors()
+                    ], 400);
+                };
+
+                $gereja_asal = $request->gereja_asal;
+                if(!$gereja_asal){
+                    $gereja_asal = 'GKJW Ngagel';
+                }
+
+                $wilayah = $request->wilayah;
+                if(!$wilayah){
+                    $wilayah = '0';
+                }
+
+                $kelompok = $request->kelompok;
+                if(!$kelompok){
+                    $kelompok = '0';
+                }
+
+                $registration = Registration::create([
+                    'uuid' => $uuid,
+                    'nama_jemaat' =>$request->nama_jemaat,
+                    'dob' => $dob,
+                    'id_ibadah' => $id_ibadah,
+                    'date_registered' => $date_registered,
+                    'wilayah' => $wilayah,
+                    'kelompok' => $kelompok,
+                    'gereja_asal' => $gereja_asal,
+                    'isScanned' => false
+                ]);
+
+                if($registration){
+                    return response()->json([
+                        'data' => $registration,
+                        'message' => 'Created Successfully'
+                    ], 201);
+                };
+
+                return response()->json([
+                    'message' => 'Failed to create Ibadah'
+                ], 409);
+            }else {
+                return response()->json([
+                    'message' => 'Error, already registered!'
+                ], 400);
+            }
+        }
     }
+
 
     /**
      * Display the specified resource.
@@ -223,7 +237,7 @@ class RegistrationController extends Controller
         Registration::destroy($id);
         return response()->json([
             'message' => 'Ibadah Deleted',
-            'deleted data' => $registration  
+            'deleted data' => $registration
         ], 200);
     }
 

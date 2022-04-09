@@ -53,3 +53,5 @@ Route::get('/nearestRegistered1', [CheckController::class, 'nearestRegistered'])
 Route::get('/v2/nearest', [CheckControllerV2::class, 'nearestV2']);
 
 Route::get('/v2/nearestv1', [CheckController::class, 'nearest']);
+
+Route::resource('/v1/registration', RegistrationController::class);
