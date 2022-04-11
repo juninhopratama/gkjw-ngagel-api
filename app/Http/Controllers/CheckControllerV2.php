@@ -21,29 +21,17 @@ class CheckControllerV2 extends Controller
         ->orderBy('tanggal_ibadah', 'ASC')
         ->get();
 
-        // $quota = $ibadah->quota;
-        // $registration = Registration::where('id_ibadah', $ibadah->id)->get();
-        // $registered = count($registration);
-        // $remaining = $quota - $registered;
-        // $nextDate = Carbon::parse($ibadah->tanggal_ibadah)->isoFormat('dddd, DD-M-YYYY');
-
         $ibadahs = array();
-
-        // $ibadahs["ibadahs"] = array(
-        //     "id5" => "q",
-        //     "id6" => "e");
-
-        // $ibadahs["ibadahse"] = array(
-        //     "id5" => "q",
-        //     "id6" => "e");
+        $counter = 0;
 
         foreach ($ibadah as $i) {
+            $counter++;
             $quota = $i->quota;
             $registration = Registration::where('id_ibadah', $i->id)->get();
             $registered = count($registration);
             $remaining = $quota - $registered;
             $nextDate = Carbon::parse($i->tanggal_ibadah)->isoFormat('dddd, DD-M-YYYY');
-            $ibadahs[$i->id] = array(
+            $ibadahs[$counter] = array(
                 'nama_ibadah' => $i->nama_ibadah,
                 'next' => $nextDate,
                 'jam_ibadah' => $i->jam_ibadah,
