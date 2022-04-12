@@ -101,7 +101,7 @@ class CheckController extends Controller
     public function registered($id_ibadah)
     {
         try {
-            $registration = Registration::where('id_ibadah', $id_ibadah)->get();
+            $registration = Registration::where('id_ibadah', $id_ibadah)->orderBy('nama_jemaat', 'asc')->get();
             $ibadah = Ibadah::where('id', $id_ibadah)->first();
             if (!$ibadah) {
                 return response()->json([
