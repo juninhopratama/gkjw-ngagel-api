@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Registration;
 use App\Models\Ibadah;
 use Carbon\Carbon;
+use Exception;
 
 class CheckController extends Controller
 {
@@ -31,7 +32,7 @@ class CheckController extends Controller
         $ibadah = Ibadah::where('tanggal_ibadah', '>=', $now)
             ->orderBy('tanggal_ibadah', 'ASC')
             ->first();
-        
+
         $quota = $ibadah->quota;
         $registration = Registration::where('id_ibadah', $ibadah->id)->get();
         $registered = count($registration);
@@ -40,10 +41,10 @@ class CheckController extends Controller
 
         if(!$ibadah){
             return response()->json([
-                'message' => 'No ibadah found',                
+                'message' => 'No ibadah found',
             ], 404);
         }
-        
+
         return response()->json([
             'now' => $now,
             'next' => $nextDate,
@@ -60,7 +61,7 @@ class CheckController extends Controller
 
         if(!$registered){
             return response()->json([
-                'message' => 'Scan code invalid!',                
+                'message' => 'Scan code invalid!',
             ], 404);
         }
 
@@ -80,7 +81,7 @@ class CheckController extends Controller
             'message' => 'Code has been scanned!'
         ], 200);
     }
-    
+
     public function nearestRegistered()
     {
         $now = Carbon::now()
@@ -89,11 +90,34 @@ class CheckController extends Controller
         $ibadah = Ibadah::where('tanggal_ibadah', '>=', $now)
             ->orderBy('tanggal_ibadah', 'ASC')
             ->first();
-        
+
         $registration = Registration::where('id_ibadah', $ibadah->id)->get();
 
         return response()->json([
             'data' => $registration
         ], 200);
+    }
+
+    public function registered($id_ibadah)
+    {
+        try {
+            $registration = Registration::where('id_ibadah', $id_ibadah)->get();
+            $ibadah = Ibadah::where('id', $id_ibadah)->first();
+            if (!$ibadah) {
+                return response()->json([
+                    'error' => 'ID Ibadah Tidak Ditemukan!'
+                ], 404);
+            }else{
+                return response()->json([
+                    'nama_ibadah' => $ibadah->nama_ibadah,
+                    'tanggal_ibadah' => $ibadah->tanggal_ibadah,
+                    'data' => $registration
+                ], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

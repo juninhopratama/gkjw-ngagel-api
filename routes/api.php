@@ -55,3 +55,6 @@ Route::get('/v2/nearest', [CheckControllerV2::class, 'nearestV2']);
 Route::get('/v2/nearestv1', [CheckController::class, 'nearest']);
 
 Route::resource('/v1/registration', RegistrationController::class);
+
+// get ibadah registered users by id
+Route::get('/registered/{id_ibadah}', [CheckController::class, 'registered']);
