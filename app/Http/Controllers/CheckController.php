@@ -110,7 +110,8 @@ class CheckController extends Controller
             }else{
                 return response()->json([
                     'nama_ibadah' => $ibadah->nama_ibadah,
-                    'tanggal_ibadah' => $ibadah->tanggal_ibadah,
+                    'tanggal_ibadah' => Carbon::parse($ibadah->tanggal_ibadah)->isoFormat('dddd, DD-M-YYYY'),
+                    'jam_ibadah' => $ibadah->jam_ibadah,
                     'data' => $registration
                 ], 200);
             }
